@@ -1,11 +1,13 @@
 import express from 'express';
+import { Response, Request } from "express";
 import bodyParser from 'body-parser';
 import * as validator from 'express-validator';
+
 import {filterImageFromURL, deleteLocalFiles} from './util/util';
 
-const { query, validationResult } = validator;
-
 (async () => {
+
+  const { query, validationResult } = validator;
 
   // Init the Express application
   const app = express();
@@ -36,8 +38,8 @@ const { query, validationResult } = validator;
     query('image_url')
       .trim()
       .isURL()
-  ], async ( req, res ) => {
-    
+  ], async ( req: Request, res: Response) => {
+
     // Check validation errors
     const errors = validationResult(req);
 		if (!errors.isEmpty()) {
@@ -55,7 +57,7 @@ const { query, validationResult } = validator;
     }
 
     // Send file in response
-    res.sendFile(filteredImgPath, (err) => {
+    res.sendFile(filteredImgPath, (err: Error) => {
       if(err){
         console.log(err);
       } else {
